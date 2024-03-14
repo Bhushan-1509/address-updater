@@ -63,12 +63,20 @@ def update_address(request):
         state = request.POST.get('state')
         postal_code = request.POST.get('postalCode')
         print(request.POST)
-        record = Address.objects.get(reference_name__icontains=reference_name)
-        record.street_address = street_address
-        record.apartment = apartment
-        record.city = city
-        record.state = state
-        record.postal_code = postal_code
-        record.country = "India"
-        record.save()
-        return render(request, "update.html")
+        if (reference_name != "" and street_address != "" and apartment != "" and city != "" and state != "0" and postal_code != "") is True:
+            record = Address.objects.get(reference_name__icontains=reference_name)
+            record.street_address = street_address
+            record.apartment = apartment
+            record.city = city
+            record.state = state
+            record.postal_code = postal_code
+            record.country = "India"
+            record.save()
+            return render(request, "update.html")
+        else:
+            addresses = Address.objects.all()
+            return render(request, "index.html",
+                          context={'success': False, 'submission': False, 'msg': 'Please fill out all fields !',
+                                   'records': addresses})
+
+
