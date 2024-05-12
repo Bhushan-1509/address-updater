@@ -7,12 +7,11 @@ def index(request):
     if request.method == 'GET' and request.GET.get('search'):
         keyword = request.GET.get('search')
         records_1 = Address.objects.filter(reference_name__icontains=keyword)
-        records_2 = Address.objects.filter(reference_name__contains=keyword)
-        if records_1 or records_2:
+        if records_1:
             if records_1:
                 return render(request, "index.html", context={'records': records_1})
             else:
-                return render(request, "index.html", context={'records': records_2})
+                return render(request, "index.html", context={'records': 'records_2'})
     if request.method == 'GET':
         addresses = Address.objects.all()
         return render(request, "index.html", context={'records': addresses})
@@ -47,7 +46,7 @@ def index(request):
 def delete_address(request):
     if request.method == 'POST':
         reference_name = request.POST.get('hidden-ref-name')
-        record = Address.objects.filter(reference_name__icontains=reference_name)
+        record = Address.objects.filter(reference_name__in=reference_name)
         if record:
             record.delete()
             return render(request, "delete.html")
@@ -63,20 +62,12 @@ def update_address(request):
         state = request.POST.get('state')
         postal_code = request.POST.get('postalCode')
         print(request.POST)
-        if (reference_name != "" and street_address != "" and apartment != "" and city != "" and state != "0" and postal_code != "") is True:
-            record = Address.objects.get(reference_name__icontains=reference_name)
-            record.street_address = street_address
-            record.apartment = apartment
-            record.city = city
-            record.state = state
-            record.postal_code = postal_code
-            record.country = "India"
-            record.save()
-            return render(request, "update.html")
-        else:
-            addresses = Address.objects.all()
-            return render(request, "index.html",
-                          context={'success': False, 'submission': False, 'msg': 'Please fill out all fields !',
-                                   'records': addresses})
-
-
+        record = Address.objects.get(reference_name__icontains=reference_name)
+        record.street_address = street_address
+        record.apartment = apartment
+        record.city = city
+        record.state = state
+        record.postal_code = postal_code
+        record.country = "India"
+        record.save()
+        return render(request, "update.html")

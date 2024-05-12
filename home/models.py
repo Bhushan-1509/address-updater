@@ -9,3 +9,9 @@ class Address(models.Model):
     state = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
+
+<<<<<<< HEAD
+    def __str__(self):
+        return self.reference_name
+=======
+>>>>>>> parent of 0e8064c (Some changes)

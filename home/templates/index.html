@@ -226,13 +226,9 @@
             city_el.value = city;
             pincode.value = postal_code;
             storeBtn.innerHTML = 'Update';
-            let urlString = window.location.href;
-            if(!urlString.includes('update/')){
-                document.getElementsByName('addForm')[0].action = "update/";
-            }
             document.getElementById('staticBackdropLabel').innerHTML = "Update address";
+            document.addForm.action = "update/"
             document.getElementById('hiddenRefName').value = ref_name.value;
-
             modal.show();
         }
 
